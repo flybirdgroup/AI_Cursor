@@ -1,87 +1,99 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
 
-export default function ApiTest() {
+const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [response, setResponse] = useState<any>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setResponse(null);
-    setError(null);
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>, handleFunc: React.Dispatch<React.SetStateAction<string>>) => 
+    handleFunc(event.target.value);
 
+  const onLogin = async (username: string, password: string) => {
+    setIsLoading(true);
     try {
-      const res = await fetch('https://cmb-staff-dsp-dev.hk.hsbc:8443/dsp/dspAuthenticate.jsp?realm=Staff&service=ssoservice', {
-        method: 'POST',
+      const response = await axios({
+        url: "https:///dsp/dspAuthenticate.oservice",
+        method: "post",
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'Accept-API-Version': "sfjslfjslfjsl",
-          'x-requested-with': "XMLHTTPRequest",
-          'X-client-id': "DSP_Test_client",
-          'x-client-secret': "fjslfjsl"
+          'Accept-API-Version': 'protocol-1.0,resource-2.1',
+          'X-Requested-With': 'XMLHttpRequest',
+          'X-Client-Id': 'fsfsfsf',
+          'X-Client-Secret': 'jsflsjflsjfsljf@123'
         },
-        body: new URLSearchParams({ username, password }),
+        withCredentials: true,
+        data: { username, password }
       });
 
-      const data = await res.json();
-      setResponse(data);
-      
-      if (!res.ok) {
-        throw new Error(data.error || 'Failed to authenticate');
+      console.log(response);
+      if (response.status === 200) {
+        console.log("pushing to networking");
+        router.push('/networking');
+      } else {
+        setIsLoading(false);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An unknown error occurred');
+      console.log(err);
+      setIsLoading(false);
     }
   };
 
+  useEffect(() => {
+    setIsLoading(true);
+    // You might want to add some initial checks here
+    setIsLoading(false);
+  }, []);
+
   return (
-    <div className="p-8">
-      <h1 className="text-2xl font-bold mb-4">API Test Page</h1>
-      <form onSubmit={handleSubmit} className="mb-4">
-        <div className="mb-2">
-          <label htmlFor="username" className="block">Username:</label>
-          <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="border p-1"
-            required
-          />
-        </div>
-        <div className="mb-2">
-          <label htmlFor="password" className="block">Password:</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="border p-1"
-            required
-          />
-        </div>
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
-          Test API
-        </button>
-      </form>
-
-      {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-          <strong>Error:</strong> {error}
-        </div>
-      )}
-
-      {response && (
-        <div>
-          <h2 className="text-xl font-bold mb-2">API Response:</h2>
-          <pre className="bg-gray-100 p-4 rounded overflow-x-auto">
-            {JSON.stringify(response, null, 2)}
-          </pre>
-        </div>
-      )}
+    <div className="flex min-h-screen items-center justify-center bg-gray-100">
+      <div className="w-full max-w-md">
+        <form onSubmit={(e) => { e.preventDefault(); onLogin(username, password); }} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+          <h2 className="text-2xl font-bold mb-6 text-center">HSBC Staff Login</h2>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
+              Username
+            </label>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="username"
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => handleChange(e, setUsername)}
+              required
+            />
+          </div>
+          <div className="mb-6">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+              Password
+            </label>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+              id="password"
+              type="password"
+              placeholder="******************"
+              value={password}
+              onChange={(e) => handleChange(e, setPassword)}
+              required
+            />
+          </div>
+          <div className="flex items-center justify-between">
+            <button
+              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              type="submit"
+              disabled={isLoading}
+            >
+              {isLoading ? 'Loading...' : 'Sign In'}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
-}
+};
+
+export default Login;
