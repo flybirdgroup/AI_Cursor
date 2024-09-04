@@ -1,8 +1,29 @@
+'use client';
+
+import { useState } from 'react';
+import Sidebar from '../components/Sidebar';
+import OnboardingForm from '../components/OnboardingForm';
+
 export default function Main() {
+  const [activeTab, setActiveTab] = useState('onboarding');
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case 'onboarding':
+        return <OnboardingForm />;
+      // Add other cases for different tabs here
+      default:
+        return <div>Select a tab</div>;
+    }
+  };
+
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center p-24">
-      <h1 className="text-4xl font-bold mb-8">Welcome to Main Page</h1>
-      <p>You have successfully logged in.</p>
+    <div className="flex min-h-screen bg-gray-100">
+      <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+      <main className="flex-1 p-10">
+        <h1 className="text-3xl font-bold mb-6">One-Click-CICD Onboarding</h1>
+        {renderContent()}
+      </main>
     </div>
   );
 }
