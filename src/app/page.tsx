@@ -1,14 +1,16 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
+import { useUser } from './contexts/UserContext';
 
 export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { setUsername: setGlobalUsername } = useUser();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>, handleFunc: React.Dispatch<React.SetStateAction<string>>) => 
     handleFunc(event.target.value);
@@ -17,7 +19,7 @@ export default function Login() {
     setIsLoading(true);
     try {
       const response = await axios({
-        url: "https://[MASKED_URL]//dsff&service=ssoservice",
+        url: "https://[MASKED_URL]/dsp/dspAuthenticate.jsp?realm=Staff&service=ssoservice",
         method: "post",
         headers: {
           'Accept-API-Version': 'protocol-1.0,resource-2.1',
@@ -31,6 +33,7 @@ export default function Login() {
 
       console.log(response);
       if (response.status === 200) {
+        setGlobalUsername(username); // Set the username in the global context
         console.log("pushing to main");
         router.push('/main');
       } else {
@@ -41,12 +44,6 @@ export default function Login() {
       setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    setIsLoading(true);
-    // You might want to add some initial checks here
-    setIsLoading(false);
-  }, []);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-24">
