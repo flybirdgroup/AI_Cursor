@@ -17,13 +17,13 @@ export default function Login() {
     setIsLoading(true);
     try {
       const response = await axios({
-        url: "ht?realm=Staff&service=ssoservice",
+        url: "https://[MASKED_URL]//dsff&service=ssoservice",
         method: "post",
         headers: {
           'Accept-API-Version': 'protocol-1.0,resource-2.1',
           'X-Requested-With': 'XMLHttpRequest',
-          'X-Client-Id': 'Dt',
-          'X-Client-Secret': 'D123'
+          'X-Client-Id': '[MASKED_CLIENT_ID]',
+          'X-Client-Secret': '[MASKED_CLIENT_SECRET]'
         },
         withCredentials: true,
         data: { username, password }
@@ -31,8 +31,8 @@ export default function Login() {
 
       console.log(response);
       if (response.status === 200) {
-        console.log("pushing to home");
-        router.push('/');
+        console.log("pushing to main");
+        router.push('/main');
       } else {
         setIsLoading(false);
       }
