@@ -23,7 +23,6 @@ export default function Main() {
     <div className="flex min-h-screen bg-gray-100">
       <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
       <main className="flex-1 p-10 overflow-auto">
-        <h1 className="text-3xl font-bold mb-6">One-Click-CICD Onboarding</h1>
         {renderContent()}
       </main>
     </div>
