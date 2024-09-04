@@ -1,9 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import Sidebar from '../components/Sidebar';
-import OnboardingForm from '../components/OnboardingForm';
-import AboutUs from '../components/AboutUs';
+
+const tabs = [
+  { id: 'onboarding', label: 'Onboarding to One-click-CICD' },
+  { id: 'aboutUs', label: 'About Us' },
+];
 
 export default function Main() {
   const [activeTab, setActiveTab] = useState('onboarding');
@@ -20,11 +22,33 @@ export default function Main() {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
-      <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
-      <main className="flex-1 p-10 overflow-auto">
+    <div className="flex flex-col min-h-screen">
+      <div className="flex border-b">
+        {tabs.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={`px-4 py-2 ${
+              activeTab === tab.id ? 'bg-blue-500 text-white' : 'text-blue-500 hover:bg-blue-100'
+            }`}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+      <main className="flex-1 p-4">
         {renderContent()}
       </main>
     </div>
   );
+}
+
+function OnboardingForm() {
+  // Implement your onboarding form here
+  return <div>Onboarding Form</div>;
+}
+
+function AboutUs() {
+  // Implement your About Us content here
+  return <div>About Us</div>;
 }
