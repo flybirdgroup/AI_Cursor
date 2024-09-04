@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import OnboardingForm from '../components/OnboardingForm';
+import AboutUs from '../components/AboutUs';
 
 const tabs = [
   { id: 'onboarding', label: 'Onboarding to One-click-CICD' },
@@ -42,14 +44,4 @@ export default function Main() {
       </div>
     </div>
   );
-}
-
-function OnboardingForm() {
-  // Implement your onboarding form here
-  return <div>Onboarding Form</div>;
-}
-
-function AboutUs() {
-  // Implement your About Us content here
-  return <div>About Us</div>;
 }
