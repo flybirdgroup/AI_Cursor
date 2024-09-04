@@ -5,8 +5,8 @@ import { Inter } from 'next/font/google'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'One Click CICD Login',
-  description: 'HSBC Staff Login Application',
+  title: 'One-Click-CICD Onboarding',
+  description: 'HSBC One-Click-CICD Onboarding Application',
 }
 
 export default function RootLayout({
