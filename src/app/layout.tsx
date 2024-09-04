@@ -21,7 +21,9 @@ export default function RootLayout({
       <UserProvider>
         <body className={inter.className}>
           <Header />
-          {children}
+          <div className="container mx-auto mt-4">
+            {children}
+          </div>
         </body>
       </UserProvider>
     </html>
