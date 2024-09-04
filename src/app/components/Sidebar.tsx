@@ -6,7 +6,8 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
   const tabs = [
     { id: 'onboarding', label: 'Onboarding to One-click-CICD' },
-    // Add more tabs here
+    { id: 'aboutUs', label: 'About Us' },
+    // Add more tabs here as needed
   ];
 
   return (
