@@ -7,8 +7,8 @@ import Header from './components/Header'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'One-Click-CICD Onboarding',
-  description: 'HSBC One-Click-CICD Onboarding Application',
+  title: 'GCP Onboarding',
+  description: 'GCP Onboarding Application',
 }
 
 export default function RootLayout({
@@ -18,14 +18,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <UserProvider>
-        <body className={inter.className}>
+      <body className={inter.className}>
+        <UserProvider>
           <Header />
-          <div className="container mx-auto mt-4">
+          <main className="container mx-auto mt-4">
             {children}
-          </div>
-        </body>
-      </UserProvider>
+          </main>
+        </UserProvider>
+      </body>
     </html>
   )
 }
