@@ -12,10 +12,8 @@ export default function Login() {
   const router = useRouter();
   const { setUsername: setGlobalUsername } = useUser();
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>, handleFunc: React.Dispatch<React.SetStateAction<string>>) => 
-    handleFunc(event.target.value);
-
-  const onLogin = async (username: string, password: string) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setIsLoading(true);
     try {
       const response = await axios({
@@ -31,56 +29,52 @@ export default function Login() {
         data: { username, password }
       });
 
-      console.log(response);
       if (response.status === 200) {
-        setGlobalUsername(username); // Set the username in the global context
-        console.log("pushing to main");
+        setGlobalUsername(username);
         router.push('/main');
-      } else {
-        setIsLoading(false);
       }
     } catch (err) {
-      console.log(err);
+      console.error('Login error:', err);
+      alert('Login failed. Please try again.');
+    } finally {
       setIsLoading(false);
     }
   };
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm">
+      <form onSubmit={handleSubmit} className="w-full max-w-md">
         <h1 className="text-4xl font-bold mb-8 text-center">HSBC Staff Login</h1>
-        <form onSubmit={(e) => { e.preventDefault(); onLogin(username, password); }} className="space-y-4">
-          <div>
-            <label htmlFor="username" className="block mb-2">Username:</label>
-            <input
-              type="text"
-              id="username"
-              value={username}
-              onChange={(e) => handleChange(e, setUsername)}
-              required
-              className="w-full p-2 border rounded"
-            />
-          </div>
-          <div>
-            <label htmlFor="password" className="block mb-2">Password:</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => handleChange(e, setPassword)}
-              required
-              className="w-full p-2 border rounded"
-            />
-          </div>
-          <button 
-            type="submit" 
-            className="w-full p-2 bg-red-500 text-white rounded hover:bg-red-600"
-            disabled={isLoading}
-          >
-            {isLoading ? 'Loading...' : 'Sign In'}
-          </button>
-        </form>
-      </div>
+        <div className="mb-4">
+          <label htmlFor="username" className="block mb-2">Username:</label>
+          <input
+            type="text"
+            id="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+            className="w-full p-2 border rounded"
+          />
+        </div>
+        <div className="mb-6">
+          <label htmlFor="password" className="block mb-2">Password:</label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="w-full p-2 border rounded"
+          />
+        </div>
+        <button 
+          type="submit" 
+          className="w-full p-2 bg-red-500 text-white rounded hover:bg-red-600"
+          disabled={isLoading}
+        >
+          {isLoading ? 'Loading...' : 'Sign In'}
+        </button>
+      </form>
     </main>
   );
 }
