@@ -7,13 +7,12 @@ export default function Header() {
   const { username, setUsername } = useUser();
   const router = useRouter();
 
+  console.log('Header rendering, username:', username);
+
   const handleLogout = () => {
     setUsername('');
-    localStorage.removeItem('username');
     router.push('/');
   };
-
-  console.log('Current username:', username); // Add this line for debugging
 
   return (
     <header className="bg-white shadow-md p-4 flex justify-between items-center">
