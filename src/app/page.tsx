@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { useUser } from './contexts/UserContext';
@@ -11,6 +11,12 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { setUsername: setGlobalUsername } = useUser();
+
+  useEffect(() => {
+    // Clear username from localStorage on login page load
+    localStorage.removeItem('username');
+    setGlobalUsername('');
+  }, [setGlobalUsername]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -31,6 +37,7 @@ export default function Login() {
 
       if (response.status === 200) {
         setGlobalUsername(username);
+        localStorage.setItem('username', username);
         router.push('/main');
       }
     } catch (err) {
@@ -59,22 +66,4 @@ export default function Login() {
         <div className="mb-6">
           <label htmlFor="password" className="block mb-2">Password:</label>
           <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="w-full p-2 border rounded"
-          />
-        </div>
-        <button 
-          type="submit" 
-          className="w-full p-2 bg-red-500 text-white rounded hover:bg-red-600"
-          disabled={isLoading}
-        >
-          {isLoading ? 'Loading...' : 'Sign In'}
-        </button>
-      </form>
-    </main>
-  );
-}
+            type="passwor
