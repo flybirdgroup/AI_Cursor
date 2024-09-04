@@ -13,10 +13,12 @@ export default function Header() {
     router.push('/');
   };
 
+  console.log('Current username:', username); // Add this line for debugging
+
   return (
     <header className="bg-white shadow-md p-4 flex justify-between items-center">
-      <h1 className="text-2xl font-bold">One-Click-CICD Onboarding</h1>
-      {username && (
+      <h1 className="text-2xl font-bold">GCP Onboarding</h1>
+      {username ? (
         <div className="flex items-center">
           <span className="mr-2">{username}</span>
           <img
@@ -34,6 +36,8 @@ export default function Header() {
             Logout
           </button>
         </div>
+      ) : (
+        <div>No user logged in</div>
       )}
     </header>
   );
