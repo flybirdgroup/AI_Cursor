@@ -24,7 +24,7 @@ export default function Header() {
             alt={`${username}'s photo`}
             className="w-10 h-10 rounded-full mr-2"
             onError={(e) => {
-              e.currentTarget.src = 'https://via.placeholder.com/40?text=User';
+              (e.target as HTMLImageElement).src = 'https://via.placeholder.com/40?text=User';
             }}
           />
           <button 
