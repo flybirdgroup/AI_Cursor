@@ -13,7 +13,6 @@ export default function Login() {
   const { setUsername: setGlobalUsername } = useUser();
 
   useEffect(() => {
-    // Clear username from localStorage on login page load
     localStorage.removeItem('username');
     setGlobalUsername('');
   }, [setGlobalUsername]);
@@ -37,7 +36,6 @@ export default function Login() {
 
       if (response.status === 200) {
         setGlobalUsername(username);
-        localStorage.setItem('username', username);
         router.push('/main');
       }
     } catch (err) {
@@ -66,4 +64,22 @@ export default function Login() {
         <div className="mb-6">
           <label htmlFor="password" className="block mb-2">Password:</label>
           <input
-            type="passwor
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="w-full p-2 border rounded"
+          />
+        </div>
+        <button 
+          type="submit" 
+          className="w-full p-2 bg-red-500 text-white rounded hover:bg-red-600"
+          disabled={isLoading}
+        >
+          {isLoading ? 'Loading...' : 'Sign In'}
+        </button>
+      </form>
+    </main>
+  );
+}
